@@ -1,30 +1,40 @@
 <?php
+ include("config.php");
 
-	//youtube link 1 : https://www.youtube.com/watch?v=hEU8Ccck1Qc
-	//youtube link 2 : https://www.youtube.com/watch?v=XNVA1-kfNnI
-	//https://www.php.net/manual/en/mongodb.installation.pecl.php
-	//https://pecl.php.net/package/mongodb/1.13.0/windows
-	//https://getcomposer.org/download/
+// Read the variables sent via POST from our API
+$sessionId   = $_POST["sessionId"];
+$serviceCode = $_POST["serviceCode"];
+$phoneNumber = $_POST["phoneNumber"];
+$text        = $_POST["text"];
 
-	require_once __DIR__ .'/vendor/autoload.php';
-	
-	//connect to remote mongo db
-	// $con = new MongoDB\Client("mongodb://localhost:27017");
+if ($text == "") {
+    // This is the first request. Note how we start the response with CON
+    $response  = "CON What would you want to check \n";
+    $response .= "1. My Account \n";
+    $response .= "2. My phone number";
 
-		//require __DIR__.'../../vendor.autoload.php';
-	$con = new MongoDB\Client(
-		'mongodb+srv://wainaina:1234@cluster0.5sgivs4.mongodb.net/PhpDb?serverSelectionTryOnce=false&serverSelectionTimeoutMS=150000&w=majority'
-	);
-	print_r($con);
+} else if ($text == "1") {
+    // Business logic for first level response
+    $response = "CON Choose account information you want to view \n";
+    $response .= "1. Account number \n";
 
-	//create a database  called PhpDb
-	$db = $con->PhpDb;
+} else if ($text == "2") {
+    // Business logic for first level response
+    // This is a terminal request. Note how we start the response with END
+    $response = "END Your phone number is ".$phoneNumber;
 
-	//create a table called PhpCollection
-	$tbl = $db->PhpCollection;
+} else if($text == "1*1") { 
+    // This is a second level response where the user selected 1 in the first instance
+    $accountNumber  = "ACC1001";
 
-	//after creating, it will not reflect in compass untill one inserts
+    // This is a terminal request. Note how we start the response with END
+    $response = "END Your account number is ".$accountNumber;
 
-	//inserting 
-	$tbl -> insertOne(["Name"=>"Peris", "Year"=>2005])
+}
+
+// Echo the response back to the API
+header('Content-type: text/plain');
+echo $response;
+
+
 ?>
