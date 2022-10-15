@@ -1,0 +1,6 @@
+1. Install mongo db libraries [NB: The project must be in C:\xampp\htdocs dir ]
+	cd C:\xampp\htdocs\USSD_Php_MongoDb
+	composer require mongodb/mongodb --ignore-platform-reqs
+
+	cd C:\xampp\htdocs\USSD_Php_MongoDb
+	composer require jenssegers/mongodb --ignore-platform-reqs
